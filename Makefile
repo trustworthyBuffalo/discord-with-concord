@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS = -Wall
 
-name = mybot
-build = build
+name = bot
+build = .
 src = src
 object_file = main.o tool.o src.o
 
