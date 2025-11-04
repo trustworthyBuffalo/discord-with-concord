@@ -2,19 +2,18 @@ CC = gcc
 CFLAGS = -Wall
 
 name = bot-discord
-build = bin
+build = build
+bin = bin
 src = src
-object_file = main.o tool.o src.o
+files = main.c tool.c src.c
 
+object_files = ${patsubst %.c, ${build}/%.o, ${files}}
 
-all: ${object_file}
-	${CC} ${CFLAGS} $^ -o ${build}/${name} -pthread -ldiscord -lcurl
+all: ${object_files}
+	${CC} ${CFLAGS} $^ -o ${bin}/${name} -pthread -ldiscord -lcurl
 
-	@echo "cleanning ..."
-	@${MAKE} clean 1> /dev/null
-
-%.o : ${src}/%.c
-	${CC} ${CFLAGS} -c $<
+${build}/%.o : ${src}/%.c
+	${CC} ${CFLAGS} -c $< -o $@
 
 clean:
-	@rm -f *.o main
+	@rm -f ${build}/*.o main
