@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS = -Wall
 
-name = bot
-build = .
+name = bot-discord
+build = bin
 src = src
 object_file = main.o tool.o src.o
 
