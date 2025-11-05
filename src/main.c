@@ -10,9 +10,11 @@ int main() {
     }
 
     struct discord *client = discord_init(token);
-    discord_set_on_ready(client, &on_ready);
 
-    // register response for command //
+    discord_set_on_ready(client, &on_ready);
+    discord_set_on_guild_create(client, &on_guild_create);
+    discord_set_on_interaction_create(client, &on_interaction);
+    
 
     discord_run(client);
 
