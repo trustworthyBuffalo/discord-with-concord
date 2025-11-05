@@ -1,8 +1,9 @@
-#include "../include/header.h"
-
+#include "bot_discord.h"
+#include "global.h"
+#include "commands.h"
 
 struct bot_state state = {0};
-
+extern struct commands cmds[];
 
 // callback akan dipanggil berulang
 void on_guild_create(struct discord *client, const struct discord_guild *guild) {
@@ -41,6 +42,20 @@ void on_guild_create(struct discord *client, const struct discord_guild *guild) 
                 NULL
             );
         };
+
+        int i = 0;
+        for (; i< cmds->count; i ++) {
+
+            struct discord_create_guild_application_command cmd = {
+                .name = cmds->arr[i].name,
+                .description = cmds->arr[i].desc,
+            };
+
+            discord_create_guild_application_command(client, ready_state.id, guild->id, &cmd, NULL);
+        }
+
+        printf("command untuk guild [ %s ] siap\n", guild->name);
+
 
     }
 

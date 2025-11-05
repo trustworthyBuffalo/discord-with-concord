@@ -1,4 +1,5 @@
-#include "header.h"
+#include "bot_discord.h"
+#include "tool.h"
 
 
 int main() {
@@ -9,10 +10,12 @@ int main() {
         return -1;
     }
 
+    load_command();
+
     struct discord *client = discord_init(token);
 
-    discord_set_on_ready(client, &on_ready);
     discord_set_on_guild_create(client, &on_guild_create);
+    discord_set_on_ready(client, &on_ready);
     discord_set_on_interaction_create(client, &on_interaction);
     
 

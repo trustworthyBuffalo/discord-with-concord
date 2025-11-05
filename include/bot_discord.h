@@ -1,11 +1,12 @@
-#include <string.h>
+
+#pragma once
 #include <concord/discord.h>
 
-#define MAX_GUILDS 4
+#define MAX_GUILDS 5
 
-// tool
 
-int get_token(const char*, char*);
+// global variable
+extern struct bot_state state;
 
 
 // service discord
@@ -16,10 +17,9 @@ void on_interaction(struct discord * , const struct discord_interaction *);
 
 void on_guild_create(struct discord *, const struct discord_guild *);
 
+void load_command();
 
-// struct
-
-
+// Guild
 struct guild_state {
     u64snowflake id;
     char name[128];
@@ -30,3 +30,10 @@ struct bot_state {
     struct guild_state guilds[MAX_GUILDS];
 
 };
+
+struct discord_ready_state {
+    u64snowflake id;
+    int has_ready;
+};
+
+extern struct discord_ready_state ready_state;

@@ -10,5 +10,5 @@
 
 ### Updated
 
-- Make improvements to the development environment derictures
+- Make improvements to the development environment directories
 - updated the rules in the Makekfile

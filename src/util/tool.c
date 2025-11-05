@@ -1,5 +1,5 @@
-#include <unistd.h>
-#include <fcntl.h>
+#include "global.h"
+
 
 int get_token(const char *token_path, char *buf) {
    
@@ -24,4 +24,14 @@ int get_token(const char *token_path, char *buf) {
     }
 
     return 0;
+}
+
+
+int index_generate(int max) {
+
+    srand(time(NULL));
+
+    int r = rand() % max;
+   
+    return r;
 }
