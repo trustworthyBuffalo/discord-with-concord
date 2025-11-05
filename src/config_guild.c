@@ -1,17 +1,7 @@
 #include "../include/header.h"
 
-#define MAX_GUILDS 4
 
-struct guild_state {
-    u64snowflake id;
-    char name[128];
-};
-
-struct bot_state {
-    size_t count;
-    struct guild_state guilds[MAX_GUILDS];
-
-} state = {0};
+struct bot_state state = {0};
 
 
 // callback akan dipanggil berulang
