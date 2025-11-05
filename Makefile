@@ -1,18 +1,26 @@
+# compile and build
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -Wall -Iinclude
+LDFLAGS = -lmariadb -ldiscord -pthread -ldiscord -lcurl
 
-name = bot
-build = build
-bin = bin
-src = src
-files = main.c tool.c config.c config_guild.c
+# development environment
+BUILD = build
+SRC = src
+NAME = bot
+BIN = bin
 
-object_files = ${patsubst %.c, ${build}/%.o, ${files}}
-all: ${object_files}
-	${CC} ${CFLAGS} $^ -o ${bin}/${name} -pthread -ldiscord -lcurl
+# general
+CFILES := ${shell find ${SRC} -name '*.c'}
+OBJ := ${patsubst ${SRC}/%.c, ${BUILD}/%.o, ${CFILES}}
 
-${build}/%.o : ${src}/%.c
+
+# == RULES
+all : ${OBJ}
+	${CC} ${CFLAGS} $^ -o ${BIN}/${NAME} ${LDFLAGS}
+	@echo "done :)" 
+
+${BUILD}/%.o : ${SRC}/%.c
 	${CC} ${CFLAGS} -c $< -o $@
 
-clean:
-	@rm -f ${build}/*.o main bot
+clean :
+	@rm -f ${BUILD}/*/*.o ${BUILD}/main.o ./bot
