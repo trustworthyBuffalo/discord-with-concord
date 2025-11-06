@@ -23,4 +23,4 @@ ${BUILD}/%.o : ${SRC}/%.c
 	${CC} ${CFLAGS} -c $< -o $@
 
 clean :
-	@rm -f ${BUILD}/*/*.o ${BUILD}/main.o ./bot
+	@rm -f ${BUILD}/*/*.o ${BUILD}/main.o ./bot ${BIN}/bot
