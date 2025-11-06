@@ -2,7 +2,7 @@
 
 #include "bot_discord.h"
 #include "tool.h"
-
+#include <time.h>
 
 
 void ping_interaction_command(struct discord *client, struct discord_interaction *event) {
@@ -10,7 +10,6 @@ void ping_interaction_command(struct discord *client, struct discord_interaction
 
         char * guild_name = get_guild_name(event->guild_id);
 
-        printf("req: [%s]:%s -> /ping\n", guild_name,event->member->user->username);
 
 
         char *link_gifs[] = {
@@ -21,10 +20,18 @@ void ping_interaction_command(struct discord *client, struct discord_interaction
 
         int id = index_generate(3);
 
+        // measure time
+        uint64_t event_id = event->id;
+        unsigned long msg_time_ms = discord_snowflake_to_ms_unit(event_id);
+        unsigned long now_time_ms = get_current_time_in_ms();
+        unsigned long duration_ms = now_time_ms - msg_time_ms;
+
+        // to client 
         char msg[1024];
-        sprintf(msg, "PONG!!!\n%s", link_gifs[id]);
+        sprintf(msg, "PONG!!! -> (%lu ms)\n%s", duration_ms, link_gifs[id]);
 
-
+        // to log
+        printf("req: [%s]:%s -> /ping (%lu ms)\n", guild_name, event->member->user->username, duration_ms);
 
         struct discord_interaction_response params = {
             .type = DISCORD_INTERACTION_CHANNEL_MESSAGE_WITH_SOURCE,

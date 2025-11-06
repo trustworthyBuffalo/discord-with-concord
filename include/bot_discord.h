@@ -1,13 +1,15 @@
 
 #pragma once
 #include <concord/discord.h>
+#include <global.h>
 
 #define MAX_GUILDS 5
+#define MAX_COMMANDS 10
 
 
 // global variable
 extern struct bot_state state;
-
+extern struct discord_ready_state ready_state;
 
 // service discord
 
@@ -36,4 +38,17 @@ struct discord_ready_state {
     int has_ready;
 };
 
-extern struct discord_ready_state ready_state;
+
+struct command {
+    char *name;
+    char *desc;
+    enum Status status;
+
+    void(*callback)(struct discord *client, const struct discord_interaction *event);
+
+};
+
+struct commands {
+    int count;
+    struct command arr[MAX_COMMANDS];
+};

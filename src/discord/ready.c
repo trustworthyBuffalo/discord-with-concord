@@ -1,7 +1,7 @@
 #include <bot_discord.h>
 #include <commands.h>
 
-
+// will set state of ready flag, contains application's id
 struct discord_ready_state ready_state = {0};
 
 // on ready we register all of our commands

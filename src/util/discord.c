@@ -1,6 +1,6 @@
 #include <bot_discord.h>
 
-
+#define DISCORD_EPOCH 1420070400000ULL
 
 char *get_guild_name( u64snowflake guild_id) {
 
@@ -12,4 +12,8 @@ char *get_guild_name( u64snowflake guild_id) {
     }
 
     return "";
+}
+
+unsigned long discord_snowflake_to_ms_unit(uint64_t snowflakes) {
+    return (snowflakes >> 22) + DISCORD_EPOCH;
 }

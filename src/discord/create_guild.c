@@ -3,7 +3,6 @@
 #include "commands.h"
 
 struct bot_state state = {0};
-extern struct commands cmds[];
 
 // callback akan dipanggil berulang
 void on_guild_create(struct discord *client, const struct discord_guild *guild) {
@@ -31,7 +30,7 @@ void on_guild_create(struct discord *client, const struct discord_guild *guild) 
         if (guild->system_channel_id) {
 
             char msg[1024];
-            sprintf(msg,"Hallo member member %s, saya siap untuk bekerja~", next_guild->name);
+            sprintf(msg,"bot is online!, Hai %s", next_guild->name);
 
             discord_create_message(
                 client,

@@ -1,4 +1,5 @@
 #include "global.h"
+#include <sys/time.h>
 
 
 int get_token(const char *token_path, char *buf) {
@@ -34,4 +35,16 @@ int index_generate(int max) {
     int r = rand() % max;
    
     return r;
+}
+
+unsigned long get_current_time_in_ms() {
+
+    struct timeval tv;
+
+    gettimeofday(&tv, NULL);
+
+    unsigned long miliseconds = (unsigned long)tv.tv_sec * 1000 + (unsigned long)tv.tv_usec / 1000;
+
+    return miliseconds;
+
 }
