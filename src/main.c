@@ -13,6 +13,10 @@ int main() {
         return EXIT_FAILURE;
     }
 
+    // init usaing config
+
+    // struct discord *client = discord_init("config.json");
+
     // load all resources
     loader();
 
