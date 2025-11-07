@@ -1,7 +1,7 @@
 #include "global_header.h"
 
 #include "state.h"
-#include "slash_command.h"
+#include "command_container_global.h"
 #include "loader.h"
 
 

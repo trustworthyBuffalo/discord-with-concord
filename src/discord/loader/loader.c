@@ -9,6 +9,8 @@ void loader() {
 
    // load slash command
    slash_command_loader();
+   prefix_command_loader();
+   
    
    // another loader
    // ...

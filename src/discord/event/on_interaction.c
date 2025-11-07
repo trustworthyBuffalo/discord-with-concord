@@ -24,6 +24,11 @@ void on_interaction(struct discord *client, const struct discord_interaction *ev
 
         slash_command_handler(client, event); 
         break;
+   
+    case DISCORD_INTERACTION_MESSAGE_COMPONENT:
+        printf("u >");
+        break;
+        
     
     default:
         

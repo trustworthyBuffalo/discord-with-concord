@@ -1,0 +1,3 @@
+
+extern struct slash_command_container slash_commands;
+extern struct prefix_command_container prefix_commands;

@@ -25,3 +25,9 @@
 ### Added
 
 - Recreate the project, design a more flexible framework.
+- Menambah fitur prefix command.
+
+## Updated
+
+- Make a ping request reply with the bot's response speed in the form of ms.
+

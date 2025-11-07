@@ -22,11 +22,20 @@ int main() {
 
     // set all event callback
     discord_set_on_ready(client, on_ready);
-    discord_set_on_interaction_create(client, on_interaction);
+
+    discord_add_intents(
+        client,
+        DISCORD_GATEWAY_GUILD_MESSAGES
+        | DISCORD_GATEWAY_MESSAGE_CONTENT
+        | DISCORD_GATEWAY_DIRECT_MESSAGES);
+
     discord_set_on_guild_create(client, on_guild_create);
+    discord_set_on_message_create(client, on_message);
+    discord_set_on_interaction_create(client, on_interaction);
 
     // hope run well...
     discord_run(client);
+    discord_cleanup(client);
 
     return EXIT_SUCCESS;
 }

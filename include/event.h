@@ -10,3 +10,9 @@ void on_interaction(struct discord *, const struct discord_interaction *);
 void slash_command_handler(struct discord *, const struct discord_interaction *);
 
 void on_guild_create(struct discord *, const struct discord_guild *);
+
+
+// message create
+void on_message(struct discord *, const struct discord_message *);
+
+void prefix_command_handler(struct discord *, const struct discord_message *);
