@@ -18,10 +18,16 @@ OBJ := ${patsubst ${SRC}/%.c, ${BUILD}/%.o, ${CFILES}}
 DEBUGOBJ := ${patsubst ${SRC}/%.c, ${DEBUG}/%.o, ${CFILES}} 
 
 
-# == RULES
+# == build
 all : ${OBJ}
 	${CC} ${CFLAGS} $^ -o ${BIN}/${NAME} ${LDFLAGS}
 	@echo "done :)" 
+
+
+${BUILD}/%.o : ${SRC}/%.c
+	${CC} ${CFLAGS} -c $< -o $@
+
+# === debug build
 
 debug : ${DEBUGOBJ}
 	${CC} ${CFLAGS} ${CCDEBUGFLAG} $^ -o ${BIN}/${DEBUG_NAME} ${LDFLAGS}
@@ -30,8 +36,7 @@ debug : ${DEBUGOBJ}
 ${DEBUG}/%.o : ${SRC}/%.c
 	${CC} ${CFLAGS} -c $< -o $@
 
-${BUILD}/%.o : ${SRC}/%.c
-	${CC} ${CFLAGS} -c $< -o $@
+# == clean rule
 
 clean :
 	@rm -fR ${BUILD}/*.o ./bot ${BIN}/bot

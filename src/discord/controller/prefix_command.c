@@ -9,7 +9,6 @@ void prefix_command_handler(struct discord *client, const struct discord_message
 
     // not like this, find \0 or whitespace for the first word 
     char *command = msg->content + strlen(DEFAULT_PREFIX);
-    printf("%s \n",command);
 
     // TODO:
     //===== command filter
