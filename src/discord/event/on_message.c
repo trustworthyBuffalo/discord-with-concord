@@ -18,7 +18,6 @@ void on_message(struct discord *client, const struct discord_message *msg) {
         return;
     }
 
-    
     log_on_message(msg);    
 
     // for now this bot not response dm;
@@ -42,8 +41,17 @@ void on_message(struct discord *client, const struct discord_message *msg) {
 void log_on_message(const struct discord_message *msg) {
 
     char *author_name = msg->author->username;
-    char *content = msg->content;
+    char *content;
     char *type;
+    
+    // check attatchment
+    if (msg->attachments && msg->attachments->size > 0) {
+
+        content = msg->attachments->array->content_type;
+    } else {
+
+        content = msg->content;
+    }
 
     if (!msg->guild_id) {
         type = type_msg[0];

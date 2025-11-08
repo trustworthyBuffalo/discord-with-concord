@@ -17,7 +17,7 @@ void slash_command_loader() {
             {
                 .name = "test",
                 .description = "test new feature",
-                .callback = NULL,
+                .callback = slash_embed,
             },
     };
     
