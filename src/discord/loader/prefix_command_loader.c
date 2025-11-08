@@ -17,7 +17,7 @@ void prefix_command_loader() {
             {
                 .name = "join",
                 .description = "joining voice channel",
-                .callback = NULL
+                .callback = prefix_join_voice
             },
             {
                 .name = "me",

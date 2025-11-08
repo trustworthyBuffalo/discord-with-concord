@@ -29,6 +29,7 @@ int main() {
     discord_add_intents(
         client
         , DISCORD_GATEWAY_GUILD_MESSAGES
+        | DISCORD_GATEWAY_GUILD_MEMBERS
         | DISCORD_GATEWAY_GUILDS
         | DISCORD_GATEWAY_GUILD_WEBHOOKS
         | DISCORD_GATEWAY_MESSAGE_CONTENT
@@ -44,7 +45,6 @@ int main() {
 
     // channel_crud
     discord_set_on_channel_create(client, on_channel_create);
-
 
     // hope run well...
     discord_run(client);

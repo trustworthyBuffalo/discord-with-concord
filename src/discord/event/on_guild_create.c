@@ -53,6 +53,8 @@ void on_guild_create(struct discord *client, const struct discord_guild *guild) 
             discord_create_guild_application_command(client, ready_state.id, guild->id, &cmd, NULL);
         }
 
+
+
         //  TODO: channel system bisa NULL
         // interaction 
         if (guild->id == DEV_GUILD) {
