@@ -10,8 +10,26 @@
 
 struct discord_guild_state_container guilds = {0};
 
+void voice_state_init(struct discord *client, struct discord_response *resp, const struct discord_guild_member *ret) {
 
-void on_guild_create(struct discord *client, const struct discord_guild *guild) {
+    // typecasting keep data (void *)
+    const struct discord_voice_state *voice_state = (const struct discord_voice_state *)resp->keep;
+
+    if (users_on_voice.count < MAX_ON_VOICE) {
+        struct discord_user_on_voice_state user = {
+            .id = ret->user->id,
+            .name = ret->user->username,
+            .voice_channel_id = voice_state->channel_id
+        };
+
+        users_on_voice.array[users_on_voice.count] = user;
+        users_on_voice.count++;
+    }
+
+}
+
+void
+on_guild_create(struct discord *client, const struct discord_guild *guild){
 
 
     if (guilds.count < MAX_GUILDS) {
@@ -54,6 +72,27 @@ void on_guild_create(struct discord *client, const struct discord_guild *guild) 
         }
 
 
+        // get voice channls state
+        if (guild->voice_states && guild->voice_states->size > 0) {
+            printf("VOICE STATE %d!!\n", guild->voice_states->size);
+
+            for (int i=0; i<guild->voice_states->size; i++) {
+                
+                // checking
+                if (guild->voice_states->array[i].member) {
+                    printf("can access member\n");
+                }
+
+                discord_get_guild_member(   client, guild->id,
+                                            guild->voice_states->array[i].user_id,
+                                            &(struct discord_ret_guild_member) {
+                                                .keep = guild,
+                                                .done = voice_state_init,
+                                            });
+
+                printf("%ld\n", (guild->voice_states->array[i].user_id));
+            }
+        }
 
         //  TODO: channel system bisa NULL
         // interaction 
