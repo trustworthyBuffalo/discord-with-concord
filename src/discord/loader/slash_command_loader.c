@@ -14,6 +14,11 @@ void slash_command_loader() {
                 .description = "how fast bot response.",
                 .callback = slash_ping,
             },
+            {
+                .name = "test",
+                .description = "test new feature",
+                .callback = NULL,
+            },
     };
     
     slash_commands.arr = commands;

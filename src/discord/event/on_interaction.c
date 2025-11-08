@@ -23,12 +23,7 @@ void on_interaction(struct discord *client, const struct discord_interaction *ev
         printf("%s commits %s\n", username_g, interaction_type);
 
         slash_command_handler(client, event); 
-        break;
-   
-    case DISCORD_INTERACTION_MESSAGE_COMPONENT:
-        printf("u >");
-        break;
-        
+        break; 
     
     default:
         

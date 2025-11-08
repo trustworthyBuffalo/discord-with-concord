@@ -1,5 +1,6 @@
 #include "global_header.h"
 #include "loader.h"
+#include "slash_command_list.h"
 
 
 
@@ -16,6 +17,12 @@ void slash_command_handler(struct discord *client, const struct discord_interact
         struct slash_command cmd = slash_commands.arr[i];
 
         if (strcmp(command_name, cmd.name) == 0) {
+
+            // check the callback notif
+            if (!cmd.callback) {
+                not_implemented(client, event); 
+                return;
+            }
 
             // run callback
             cmd.callback(client, event);
