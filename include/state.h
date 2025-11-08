@@ -12,13 +12,16 @@ struct discord_ready_state {
     
     // as snowflake
     uint64_t id;
-};
 
+};
 
 
 struct discord_guild_state{
     char  *name;
     uint64_t id;
+
+    uint16_t system_channel_id;
+
 };
 
 struct discord_guild_state_container {

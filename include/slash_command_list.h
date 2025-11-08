@@ -13,4 +13,4 @@ void slash_ping(struct discord *, const struct discord_interaction *);
 void slash_embed(struct discord *, const struct discord_interaction *);
 
 //==
-void not_implemented(struct discord *, const struct discord_interaction *);
+void slash_not_implemented(struct discord *, const struct discord_interaction *);

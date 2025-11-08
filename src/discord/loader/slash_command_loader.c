@@ -15,9 +15,14 @@ void slash_command_loader() {
                 .callback = slash_ping,
             },
             {
+                .name = "me",
+                .description = "show your info",
+                .callback = NULL,
+            },
+            {
                 .name = "test",
                 .description = "test new feature",
-                .callback = slash_embed,
+                .callback = NULL,
             },
     };
     

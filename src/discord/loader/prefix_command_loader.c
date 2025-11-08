@@ -14,6 +14,21 @@ void prefix_command_loader() {
                 .description = "how fast bot response.",
                 .callback = prefix_ping
             },
+            {
+                .name = "join",
+                .description = "joining voice channel",
+                .callback = NULL
+            },
+            {
+                .name = "me",
+                .description = "joining voice channel",
+                .callback = NULL
+            },
+            {
+                .name = "test",
+                .description = "joining voice channel",
+                .callback = NULL
+            },
     };
     
     prefix_commands.arr = commands;

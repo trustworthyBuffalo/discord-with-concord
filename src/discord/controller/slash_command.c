@@ -20,7 +20,7 @@ void slash_command_handler(struct discord *client, const struct discord_interact
 
             // check the callback notif
             if (!cmd.callback) {
-                not_implemented(client, event); 
+                slash_not_implemented(client, event); 
                 return;
             }
 

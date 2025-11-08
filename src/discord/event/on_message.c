@@ -40,6 +40,7 @@ void on_message(struct discord *client, const struct discord_message *msg) {
 
 void log_on_message(const struct discord_message *msg) {
 
+
     char *author_name = msg->author->username;
     char *content;
     char *type;

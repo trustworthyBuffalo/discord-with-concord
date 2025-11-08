@@ -20,8 +20,14 @@ void on_guild_create(struct discord *client, const struct discord_guild *guild) 
 
         struct discord_guild_state next_guild = {
             .id = guild->id,
-            .name = guild->name
+            .name = guild->name,
         };
+
+        // register its system id if thereis any
+        if (guild->system_channel_id) {
+
+            next_guild.system_channel_id = guild->system_channel_id;
+        }
 
         guilds.arr[guilds.count] = next_guild;
         guilds.count++;
@@ -47,6 +53,7 @@ void on_guild_create(struct discord *client, const struct discord_guild *guild) 
             discord_create_guild_application_command(client, ready_state.id, guild->id, &cmd, NULL);
         }
 
+        //  TODO: channel system bisa NULL
         // interaction 
         if (guild->id == DEV_GUILD) {
 

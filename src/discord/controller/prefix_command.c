@@ -1,5 +1,7 @@
 #include "global_header.h"
 #include "loader.h"
+#include "prefix_command_list.h"
+
 
 #define DEFAULT_PREFIX "!"
 
@@ -23,6 +25,12 @@ void prefix_command_handler(struct discord *client, const struct discord_message
         if (strcmp(command, cmd.name) == 0) {
 
             //TODO: stripe the command from message content
+
+            // check the available callback
+            if (!cmd.callback) {
+                prefix_not_implemented(client, msg);
+                return;
+            }
 
             // run callback, it will handle response and argument if there is any
             cmd.callback(client, msg);

@@ -15,7 +15,7 @@ void slash_embed(struct discord *client, const struct discord_interaction *event
             .text = "cumungut :3"
         },
         .image = &(struct discord_embed_image) {
-            .url = "https://tenor.com/view/monkey-thinking-monkey-thinking-gif-2583568459980509748",
+            .url = "",
             .height = 30,
             .width = 30
         },
