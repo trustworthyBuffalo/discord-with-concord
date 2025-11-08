@@ -7,7 +7,6 @@
 #include <stdlib.h>
 
 
-
 int main() {
 
 
@@ -45,6 +44,7 @@ int main() {
 
     // channel_crud
     discord_set_on_channel_create(client, on_channel_create);
+
 
     // hope run well...
     discord_run(client);

@@ -48,7 +48,5 @@ void on_voice_state_update(struct discord *client, const struct discord_voice_st
         }
     }
 
-
-
     return;
 }

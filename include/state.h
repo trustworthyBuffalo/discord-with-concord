@@ -22,7 +22,7 @@ struct discord_ready_state {
 
 // guild state
 struct discord_guild_state{
-    char  *name;
+    char  name[100];
     uint64_t id;
 
     uint16_t system_channel_id;

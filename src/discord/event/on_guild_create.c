@@ -10,16 +10,16 @@
 
 struct discord_guild_state_container guilds = {0};
 
+u64snowflake voice_channel_id = 0;
+
 void voice_state_init(struct discord *client, struct discord_response *resp, const struct discord_guild_member *ret) {
 
-    // typecasting keep data (void *)
-    const struct discord_voice_state *voice_state = (const struct discord_voice_state *)resp->keep;
 
     if (users_on_voice.count < MAX_ON_VOICE) {
         struct discord_user_on_voice_state user = {
             .id = ret->user->id,
             .name = ret->user->username,
-            .voice_channel_id = voice_state->channel_id
+            .voice_channel_id = voice_channel_id
         };
 
         users_on_voice.array[users_on_voice.count] = user;
@@ -38,8 +38,9 @@ on_guild_create(struct discord *client, const struct discord_guild *guild){
 
         struct discord_guild_state next_guild = {
             .id = guild->id,
-            .name = guild->name,
         };
+
+        strcpy(next_guild.name, guild->name);
 
         // register its system id if thereis any
         if (guild->system_channel_id) {
@@ -74,23 +75,17 @@ on_guild_create(struct discord *client, const struct discord_guild *guild){
 
         // get voice channls state
         if (guild->voice_states && guild->voice_states->size > 0) {
-            printf("VOICE STATE %d!!\n", guild->voice_states->size);
 
             for (int i=0; i<guild->voice_states->size; i++) {
-                
-                // checking
-                if (guild->voice_states->array[i].member) {
-                    printf("can access member\n");
-                }
+
+                voice_channel_id = guild->voice_states->array[i].channel_id;
 
                 discord_get_guild_member(   client, guild->id,
                                             guild->voice_states->array[i].user_id,
                                             &(struct discord_ret_guild_member) {
-                                                .keep = guild,
                                                 .done = voice_state_init,
                                             });
 
-                printf("%ld\n", (guild->voice_states->array[i].user_id));
             }
         }
 

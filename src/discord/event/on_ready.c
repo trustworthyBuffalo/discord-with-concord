@@ -13,6 +13,7 @@ void on_ready(struct discord *client, const struct discord_ready *event) {
     ready_state.id = event->application->id;
     ready_state.status = 1;
 
+
     printf("[OK] discord ready state\n");
     printf("[>>] log:\n");
 }

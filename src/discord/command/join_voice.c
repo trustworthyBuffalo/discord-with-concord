@@ -13,9 +13,14 @@ void prefix_join_voice(struct discord *client, const struct discord_message *msg
 
         if ( users_on_voice.array[i].id == msg->author->id &&
                 users_on_voice.array[i].voice_channel_id != 0) {
+
+            // TODO: jika bot sudah masuk, stop di sini
+
             resp = "ok just wait...";
             in_voice = 1;
             voice_channel_id = users_on_voice.array[i].voice_channel_id;
+
+            printf("%ld\n", voice_channel_id);
             break;
         
         }

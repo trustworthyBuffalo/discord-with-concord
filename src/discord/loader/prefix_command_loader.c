@@ -22,7 +22,7 @@ void prefix_command_loader() {
             {
                 .name = "leave",
                 .description = "joining voice channel",
-                .callback = NULL
+                .callback = prefix_leave_voice
             },
             {
                 .name = "me",
