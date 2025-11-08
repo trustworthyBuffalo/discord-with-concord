@@ -20,6 +20,11 @@ void prefix_command_loader() {
                 .callback = prefix_join_voice
             },
             {
+                .name = "leave",
+                .description = "joining voice channel",
+                .callback = NULL
+            },
+            {
                 .name = "me",
                 .description = "joining voice channel",
                 .callback = NULL
