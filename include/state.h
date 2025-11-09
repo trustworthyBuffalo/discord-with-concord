@@ -45,7 +45,7 @@ struct member_in_voice {
 };
 
 struct bot_state {
-    bool status;
+    int status;
     u64snowflake voice_channel_id; // <- 0 when not in
 };
 
@@ -58,6 +58,11 @@ struct guild_state {
 };
 
 struct guild_state_list {
+    // soon
+    u64snowflake application_id;
+    int status;
+
+    // guild data segment
     int count;
     struct guild_state data[MAX_GUILDS];
 };

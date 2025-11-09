@@ -37,22 +37,28 @@ void on_message(struct discord *client, const struct discord_message *msg) {
 }
 
 
-void log_on_message(const struct discord_message *msg) {
+void log_on_message(const struct discord_message *msg)
+{
 
     char *username = msg->author->username;
     char *medium;
 
 
     if (msg->guild_id)
-        for (int i=0; i<guild_states.count; i++) {
-           
-            if (guild_states.data[i].guild_id == msg->guild_id) {
+    {
+        for (int i=0; i<guild_states.count; i++)
+        {
+            if (guild_states.data[i].guild_id == msg->guild_id)
+            {
                 medium = guild_states.data[i].name;
                 break;
             }
-    } else {
+        }
+    }
+    else
+    {
         medium = "dm";
     }
-
+    
     printf("[%s](%s): %s\n", medium, username, msg->content);
 }

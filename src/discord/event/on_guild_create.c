@@ -9,11 +9,14 @@
 
 
 struct discord_guild_state_container guilds = {0};
+
+
 struct guild_state_list guild_states = {0};
 
 void
-on_guild_create_init_track_guild( struct discord *client,
-                                    struct guild_state *t)
+on_guild_create_init_track_guild(
+    struct discord *client,
+    struct guild_state *t)
 {
     for (int i=0;i<MAX_MEMBER_VOICE_TRACK;i++)
         t->member_in_voice_list[i].available = true;
@@ -24,11 +27,15 @@ on_guild_create_init_track_guild( struct discord *client,
 
 
 void
-on_guild_create_set_user_in_voice(   struct discord *client,
-                                    struct discord_voice_states *states,
-                                    struct guild_state *track)
+on_guild_create_set_user_in_voice(
+    struct discord *client,
+    struct discord_voice_states *states,
+    struct guild_state *track)
 {
-    for (int i = 0; i < states->size; i++)
+    int limit = states->size < MAX_MEMBER_VOICE_TRACK ?
+                states->size : MAX_MEMBER_VOICE_TRACK;
+
+    for (int i = 0; i < limit; i++)
     {
         track->member_in_voice_list[i].available = false;
         track->member_in_voice_list[i].channel_id = states->array[i].channel_id;
@@ -39,15 +46,17 @@ on_guild_create_set_user_in_voice(   struct discord *client,
 
 
 void
-on_guild_create(struct discord *client, const struct discord_guild *guild){
-
-
+on_guild_create(struct discord *client, const struct discord_guild *guild)
+{
     if (guild_states.count < MAX_GUILDS) {
 
         // register guild
         struct guild_state *next_guild = &guild_states.data[guild_states.count];
+        memset(next_guild, 0, sizeof(*next_guild));
 
-        strcpy(next_guild->name, guild->name);
+        strncpy(next_guild->name, guild->name, (size_t)MAX_CHAR_NAME - 1);
+        next_guild->name[MAX_CHAR_NAME] = '\0';
+
         next_guild->guild_id = guild->id;
 
         // register command in new guild
@@ -66,11 +75,12 @@ on_guild_create(struct discord *client, const struct discord_guild *guild){
                .description = slash_commands.arr[i].description, 
             };
 
-            discord_create_guild_application_command(   client,
-                                                        ready_state.id,
-                                                        guild->id,
-                                                        &cmd,
-                                                        NULL);
+            discord_create_guild_application_command(
+                client,
+                ready_state.id,
+                guild->id,
+                &cmd,
+                NULL);
         }
 
         // get voice channls state
@@ -84,7 +94,11 @@ on_guild_create(struct discord *client, const struct discord_guild *guild){
                         next_guild);
         }
 
+        // set bot state
+        next_guild->bot.status = 1;
+        next_guild->bot.voice_channel_id = 0;
 
+        // next
         guild_states.count++;
 
     }
