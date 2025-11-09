@@ -1,10 +1,9 @@
 #include "global_header.h"
 
 
-#define MAX_GUILDS 10
 #define MAX_ON_VOICE 100
 
-#define MAX_GUILD_TRACK 5
+#define MAX_GUILDS 5
 #define MAX_MEMBER_VOICE_TRACK 500
 
 
@@ -45,14 +44,22 @@ struct member_in_voice {
     u64snowflake channel_id;
 };
 
+struct bot_state {
+    bool status;
+    u64snowflake voice_channel_id; // <- 0 when not in
+};
+
 struct guild_state {
     u64snowflake guild_id;
+    char name[MAX_CHAR_NAME];
+
     struct member_in_voice member_in_voice_list[MAX_MEMBER_VOICE_TRACK];
+    struct bot_state bot;
 };
 
 struct guild_state_list {
     int count;
-    struct guild_state data[MAX_GUILD_TRACK];
+    struct guild_state data[MAX_GUILDS];
 };
 
 // bot voice channel state

@@ -2,7 +2,7 @@
 CC = gcc
 CFLAGS = -Wall -Iinclude
 LDFLAGS = -lmariadb -ldiscord -pthread -ldiscord -lcurl
-CCDEBUGFLAG =  -g
+CCDEBUGFLAG =  -g -O0
 
 # development environment
 BUILD = build

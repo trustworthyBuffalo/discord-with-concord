@@ -44,10 +44,10 @@ void log_on_message(const struct discord_message *msg) {
 
 
     if (msg->guild_id)
-        for (int i=0; i<guilds.count; i++) {
+        for (int i=0; i<guild_states.count; i++) {
            
-            if (guilds.arr[i].id == msg->guild_id) {
-                medium = guilds.arr[i].name;
+            if (guild_states.data[i].guild_id == msg->guild_id) {
+                medium = guild_states.data[i].name;
                 break;
             }
     } else {
