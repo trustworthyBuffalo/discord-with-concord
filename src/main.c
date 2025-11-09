@@ -41,9 +41,11 @@ int main() {
     discord_set_on_voice_state_update(client, on_voice_state_update);
     discord_set_on_message_create(client, on_message);
     discord_set_on_interaction_create(client, on_interaction);
+   
+    // discord_set_on_voice_server_update
 
     // channel_crud
-    discord_set_on_channel_create(client, on_channel_create);
+    // discord_set_on_channel_create(client, on_channel_create);
 
 
     // hope run well...

@@ -2,56 +2,40 @@
 #include "state.h"
 
 
-void prefix_join_voice(struct discord *client, const struct discord_message *msg) {
 
-    char *resp = "You not in the voice channel bro";
-    int in_voice = 0;
-    u64snowflake voice_channel_id = 0;
 
-    int i = 0;
-    for (; i < users_on_voice.count ; i++) {
+void
+prefix_join_voice_check_in_voice(   struct discord *client,
+                                    const struct discord_message *msg,
+                                    int idx)
+{
+    struct track_guild_member_voice *g = &guild_member_voices_state.array[idx];
 
-        if ( users_on_voice.array[i].id == msg->author->id &&
-                users_on_voice.array[i].voice_channel_id != 0) {
-
-            // TODO: jika bot sudah masuk, stop di sini
-
-            resp = "ok just wait...";
-            in_voice = 1;
-            voice_channel_id = users_on_voice.array[i].voice_channel_id;
-
-            printf("%ld\n", voice_channel_id);
-            break;
-        
+    for (int i=0;i<MAX_MEMBER_VOICE_TRACK;i++)
+    {
+        if (g->array[i].user_id == msg->author->id)
+        {
+            printf("[debug]: user ~%s in voice\n", msg->author->username);
+            return;
         }
     }
 
-    struct discord_create_message params = {
-        .content = resp,
-    };
+    printf("[debug]: user ~%s not in voice.\n", msg->author->username); return;
+}
 
 
-    discord_create_message(
-        client,
-        msg->channel_id,
-        &params,
-        NULL
-    );
+void
+prefix_join_voice(struct discord *client, const struct discord_message *msg)
+{
 
-    if (in_voice) {
-
-        // join voice channel
-        discord_update_voice_state(
-            client,
-            &(struct discord_update_voice_state) {
-                .guild_id = msg->guild_id,
-                .channel_id = voice_channel_id,
-                .self_mute = true,
-                .self_deaf = false
-            }
-        );
-
-
+    // checking message from which guild
+    for (int i=0;i<guild_member_voices_state.count;i++)
+    {
+        if (guild_member_voices_state.array[i].guild_id == msg->guild_id)
+        {
+            prefix_join_voice_check_in_voice(client, msg, i);
+            return;
+        }
     }
 
 }

@@ -1,52 +1,73 @@
 #include "global_header.h"
 #include "state.h"
 
-struct discord_user_on_voice_state_container users_on_voice = {0};
 
-void on_voice_state_update(struct discord *client, const struct discord_voice_state *st) {
+struct track_guild_member_voices guild_member_voices_state = {0};
 
-    uint64_t channel_id = st->channel_id;
-    char *username = st->member->user->username;
+void
+on_voice_state_update_join(const struct discord_voice_state *st, int idx)
+{
+    struct track_guild_member_voice *g = &guild_member_voices_state.array[idx];
 
-    if (channel_id > 0) {
-        printf("user %s join voice\n", username);
+    for (int i=0;i<MAX_MEMBER_VOICE_TRACK;i++)
+    {
+        if (g->array[i].available)
+        {
+            g->array[i].available = false;
+            g->array[i].channel_id = st->channel_id;
+            g->array[i].user_id = st->user_id;
 
-        int i = 0;
-        for (; i < users_on_voice.count ; i++) {
+            printf("[user_event]~%s: joined voice channel\n",
+                    st->member->user->username);
 
-            if (st->member->user->id == users_on_voice.array[i].id) {
-
-                users_on_voice.array[i].voice_channel_id = st->channel_id;
-                return;
-            }
+            return;
         }
 
-        if (users_on_voice.count < MAX_ON_VOICE) {
+        printf("join, user never found");
+    }
+}
 
-            struct discord_user_on_voice_state new_user = {
-                .name = username,
-                .id = st->member->user->id,
-                .voice_channel_id = channel_id
-            };
 
-            users_on_voice.array[users_on_voice.count] = new_user;
-            users_on_voice.count++;
+void
+on_voice_state_update_leave(const struct discord_voice_state *st, int idx)
+{
+    struct track_guild_member_voice *g = &guild_member_voices_state.array[idx];
+
+    for (int i=0;i<MAX_MEMBER_VOICE_TRACK;i++)
+    {
+        if (g->array[i].available == false &&
+            g->array[i].user_id == st->user_id)
+        {
+            g->array[i].available = true;
+            g->array[i].channel_id = 0;
+            g->array[i].user_id = 0;
+
+            printf("[user_event]~%s: leaved voice channel\n",
+                    st->member->user->username);
+
+            return;
+        }
+
+        printf("leave, user never found");
+    }
+}
+
+void
+on_voice_state_update(  struct discord *client,
+                        const struct discord_voice_state *st)
+{
+    for (int i=0; i < guild_member_voices_state.count; i++)
+    {
+        if (guild_member_voices_state.array[i].guild_id == st->guild_id)
+        {
+            if (st->channel_id)
+                on_voice_state_update_join(st, i);
+            else
+                on_voice_state_update_leave(st, i);
+            
+            break;
         }
     }
-    else {
-
-        printf("user %s leaved voice\n", username);
-
-        int i = 0;
-        for (; i < users_on_voice.count ; i++) {
-
-            if (st->member->user->id == users_on_voice.array[i].id) {
-
-                users_on_voice.array[i].voice_channel_id = channel_id;
-                return;
-            }
-        }
-    }
-
+ 
     return;
 }

@@ -6,6 +6,7 @@ struct discord_ready_state ready_state = {
     .id = 0
 };
 
+
 void on_ready(struct discord *client, const struct discord_ready *event) {
 
     printf("[..] bot ready set state ...\n");
@@ -17,3 +18,4 @@ void on_ready(struct discord *client, const struct discord_ready *event) {
     printf("[OK] discord ready state\n");
     printf("[>>] log:\n");
 }
+

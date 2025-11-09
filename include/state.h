@@ -4,11 +4,15 @@
 #define MAX_GUILDS 10
 #define MAX_ON_VOICE 100
 
+#define MAX_GUILD_TRACK 5
+#define MAX_MEMBER_VOICE_TRACK 500
+
+
+#define MAX_CHAR_NAME 101 // include null char
+
 extern struct discord_ready_state ready_state;
 extern struct discord_guild_state_container guilds;
-extern struct discord_user_on_voice_state_container users_on_voice;
-
-
+extern struct track_guild_member_voices guild_member_voices_state;
 
 // ready bot state
 struct discord_ready_state {
@@ -35,15 +39,20 @@ struct discord_guild_state_container {
 };
 
 // on voice channel state
-struct discord_user_on_voice_state {
-
-    char *name;
-    // snowflake
-    uint64_t id;
-    uint64_t voice_channel_id;
+struct track_member_voice {
+    bool available;
+    u64snowflake user_id;
+    u64snowflake channel_id;
 };
 
-struct discord_user_on_voice_state_container {
+struct track_guild_member_voice {
+    u64snowflake guild_id;
+    struct track_member_voice array[MAX_MEMBER_VOICE_TRACK];
+};
+
+struct track_guild_member_voices {
     int count;
-    struct discord_user_on_voice_state array[MAX_ON_VOICE];
+    struct track_guild_member_voice array[MAX_GUILD_TRACK];
 };
+
+// bot voice channel state

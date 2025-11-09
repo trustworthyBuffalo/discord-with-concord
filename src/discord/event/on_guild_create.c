@@ -10,23 +10,31 @@
 
 struct discord_guild_state_container guilds = {0};
 
-u64snowflake voice_channel_id = 0;
+void
+on_guild_create_init_track_guild( struct discord *client,
+                                    struct track_guild_member_voice *t)
+{
+    for (int i=0;i<MAX_MEMBER_VOICE_TRACK;i++)
+        t->array[i].available = true;
 
-void voice_state_init(struct discord *client, struct discord_response *resp, const struct discord_guild_member *ret) {
-
-
-    if (users_on_voice.count < MAX_ON_VOICE) {
-        struct discord_user_on_voice_state user = {
-            .id = ret->user->id,
-            .name = ret->user->username,
-            .voice_channel_id = voice_channel_id
-        };
-
-        users_on_voice.array[users_on_voice.count] = user;
-        users_on_voice.count++;
-    }
-
+    return;
 }
+
+
+void
+on_guild_create_set_user_in_voice(   struct discord *client,
+                                    struct discord_voice_states *states,
+                                    struct track_guild_member_voice *track)
+{
+    for (int i = 0; i < states->size; i++)
+    {
+        track->array[i].available = false;
+        track->array[i].channel_id = states->array[i].channel_id;
+        track->array[i].user_id = states->array[i].user_id;
+    }
+    
+}
+
 
 void
 on_guild_create(struct discord *client, const struct discord_guild *guild){
@@ -74,19 +82,33 @@ on_guild_create(struct discord *client, const struct discord_guild *guild){
 
 
         // get voice channls state
-        if (guild->voice_states && guild->voice_states->size > 0) {
 
-            for (int i=0; i<guild->voice_states->size; i++) {
+        if (guild_member_voices_state.count < MAX_GUILD_TRACK)
+        {
 
-                voice_channel_id = guild->voice_states->array[i].channel_id;
+            guild_member_voices_state
+                .array[guild_member_voices_state.count].guild_id = guild->id;
 
-                discord_get_guild_member(   client, guild->id,
-                                            guild->voice_states->array[i].user_id,
-                                            &(struct discord_ret_guild_member) {
-                                                .done = voice_state_init,
-                                            });
+            on_guild_create_init_track_guild
+                (client,
+                &guild_member_voices_state
+                    .array[guild_member_voices_state.count]); 
 
+            if (guild->voice_states && guild->voice_states->size > 0)
+            {
+                on_guild_create_set_user_in_voice(
+                            client,
+                            guild->voice_states,
+                            &(guild_member_voices_state
+                                .array[guild_member_voices_state.count])
+                            );
             }
+
+            guild_member_voices_state.count++;
+        }
+        else
+        {
+            printf("[warning]: MAX GUILD TRACK reached\n");
         }
 
         //  TODO: channel system bisa NULL
