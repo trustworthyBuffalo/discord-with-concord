@@ -9,13 +9,14 @@
 
 
 struct discord_guild_state_container guilds = {0};
+struct guild_state_list guild_states = {0};
 
 void
 on_guild_create_init_track_guild( struct discord *client,
-                                    struct track_guild_member_voice *t)
+                                    struct guild_state *t)
 {
     for (int i=0;i<MAX_MEMBER_VOICE_TRACK;i++)
-        t->array[i].available = true;
+        t->member_in_voice_list[i].available = true;
 
     return;
 }
@@ -24,13 +25,13 @@ on_guild_create_init_track_guild( struct discord *client,
 void
 on_guild_create_set_user_in_voice(   struct discord *client,
                                     struct discord_voice_states *states,
-                                    struct track_guild_member_voice *track)
+                                    struct guild_state *track)
 {
     for (int i = 0; i < states->size; i++)
     {
-        track->array[i].available = false;
-        track->array[i].channel_id = states->array[i].channel_id;
-        track->array[i].user_id = states->array[i].user_id;
+        track->member_in_voice_list[i].available = false;
+        track->member_in_voice_list[i].channel_id = states->array[i].channel_id;
+        track->member_in_voice_list[i].user_id = states->array[i].user_id;
     }
     
 }
@@ -83,28 +84,28 @@ on_guild_create(struct discord *client, const struct discord_guild *guild){
 
         // get voice channls state
 
-        if (guild_member_voices_state.count < MAX_GUILD_TRACK)
+        if (guild_states.count < MAX_GUILD_TRACK)
         {
 
-            guild_member_voices_state
-                .array[guild_member_voices_state.count].guild_id = guild->id;
+            guild_states
+                .data[guild_states.count].guild_id = guild->id;
 
             on_guild_create_init_track_guild
                 (client,
-                &guild_member_voices_state
-                    .array[guild_member_voices_state.count]); 
+                &guild_states
+                    .data[guild_states.count]); 
 
             if (guild->voice_states && guild->voice_states->size > 0)
             {
                 on_guild_create_set_user_in_voice(
                             client,
                             guild->voice_states,
-                            &(guild_member_voices_state
-                                .array[guild_member_voices_state.count])
+                            &(guild_states
+                                .data[guild_states.count])
                             );
             }
 
-            guild_member_voices_state.count++;
+            guild_states.count++;
         }
         else
         {

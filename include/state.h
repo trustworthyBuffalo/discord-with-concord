@@ -12,7 +12,7 @@
 
 extern struct discord_ready_state ready_state;
 extern struct discord_guild_state_container guilds;
-extern struct track_guild_member_voices guild_member_voices_state;
+extern struct guild_state_list guild_states;
 
 // ready bot state
 struct discord_ready_state {
@@ -39,20 +39,20 @@ struct discord_guild_state_container {
 };
 
 // on voice channel state
-struct track_member_voice {
+struct member_in_voice {
     bool available;
     u64snowflake user_id;
     u64snowflake channel_id;
 };
 
-struct track_guild_member_voice {
+struct guild_state {
     u64snowflake guild_id;
-    struct track_member_voice array[MAX_MEMBER_VOICE_TRACK];
+    struct member_in_voice member_in_voice_list[MAX_MEMBER_VOICE_TRACK];
 };
 
-struct track_guild_member_voices {
+struct guild_state_list {
     int count;
-    struct track_guild_member_voice array[MAX_GUILD_TRACK];
+    struct guild_state data[MAX_GUILD_TRACK];
 };
 
 // bot voice channel state
