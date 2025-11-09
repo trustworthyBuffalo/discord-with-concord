@@ -2,4 +2,7 @@
 
 
 
-void create_message_generator(struct discord *, u64snowflake, char *);
+void create_message_generator(
+    struct discord *client,
+    u64snowflake guild_id,
+    char *content);

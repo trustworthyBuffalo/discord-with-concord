@@ -37,6 +37,12 @@ on_guild_create_set_user_in_voice(
 
     for (int i = 0; i < limit; i++)
     {
+        if (states->array[i].user_id == ready_state.id)
+        {
+            track->bot.voice_channel_id = states->array[i].channel_id;
+            continue;
+        }
+        
         track->member_in_voice_list[i].available = false;
         track->member_in_voice_list[i].channel_id = states->array[i].channel_id;
         track->member_in_voice_list[i].user_id = states->array[i].user_id;
@@ -60,9 +66,8 @@ on_guild_create(struct discord *client, const struct discord_guild *guild)
         next_guild->guild_id = guild->id;
 
         // register command in new guild
-        int i = 0;
-        for (; i < slash_commands.count; i ++) {
-
+        for (int i=0; i < slash_commands.count; i ++)
+        {
             // if there is a test command and not guild dev, just ignore
             if (strcmp(slash_commands.arr[i].name, TEST_SLASH_COMMAND) == 0 
                 && guild->id != DEV_GUILD) {
@@ -96,11 +101,9 @@ on_guild_create(struct discord *client, const struct discord_guild *guild)
 
         // set bot state
         next_guild->bot.status = 1;
-        next_guild->bot.voice_channel_id = 0;
 
         // next
         guild_states.count++;
-
     }
     else
     {
@@ -110,13 +113,13 @@ on_guild_create(struct discord *client, const struct discord_guild *guild)
 
     //  TODO: channel system bisa NULL
     // interaction 
-    if (guild->id == DEV_GUILD) {
-
+    if (guild->id == DEV_GUILD)
+    {
         discord_create_message(
             client,
             guild->system_channel_id,
             &(struct discord_create_message) {
-                .content = "hai dev!"
+                .content = "online :3"
             },
             NULL
         );
